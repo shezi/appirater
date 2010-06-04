@@ -182,6 +182,7 @@ NSString *templateReviewURL = @"itms-apps://itunes.apple.com/WebObjects/MZStore.
 													   delegate:self
 											  cancelButtonTitle:APPIRATER_CANCEL_BUTTON
 											  otherButtonTitles:APPIRATER_RATE_BUTTON, APPIRATER_RATE_LATER, nil];
+	[alertView autorelease];
 	[alertView show];
 }
 
@@ -213,7 +214,6 @@ NSString *templateReviewURL = @"itms-apps://itunes.apple.com/WebObjects/MZStore.
 	
 	[userDefaults synchronize];
 	
-	[alertView release];
 	[self release];
 }
 
