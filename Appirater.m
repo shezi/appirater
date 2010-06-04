@@ -43,6 +43,8 @@ NSString *const kAppiraterLaunchCount				= @"kAppiraterLaunchCount";
 NSString *const kAppiraterCurrentVersion			= @"kAppiraterCurrentVersion";
 NSString *const kAppiraterRatedCurrentVersion		= @"kAppiraterRatedCurrentVersion";
 NSString *const kAppiraterDeclinedToRate			= @"kAppiraterDeclinedToRate";
+NSString *const kAppiraterAppID						= @"kAppiraterAppID";
+
 
 NSString *templateReviewURL = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=APP_ID&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&type=Purple+Software";
 
@@ -88,7 +90,10 @@ NSString *templateReviewURL = @"itms-apps://itunes.apple.com/WebObjects/MZStore.
 
 @implementation Appirater
 
-+ (void)appLaunched {
++ (void)appLaunchedWithID:(NSInteger)appID {
+	
+	[[NSUserDefaults standardUserDefaults] setInteger:appID forKey:kAppiraterAppID];
+	
 	Appirater *appirater = [[Appirater alloc] init];
 	[NSThread detachNewThreadSelector:@selector(_appLaunched) toTarget:appirater withObject:nil];
 }
@@ -199,7 +204,8 @@ NSString *templateReviewURL = @"itms-apps://itunes.apple.com/WebObjects/MZStore.
 		case 1:
 		{
 			// they want to rate it
-			NSString *reviewURL = [templateReviewURL stringByReplacingOccurrencesOfString:@"APP_ID" withString:[NSString stringWithFormat:@"%d", APPIRATER_APP_ID]];
+			NSInteger appID = [userDefaults integerForKey:kAppiraterAppID];
+			NSString *reviewURL = [templateReviewURL stringByReplacingOccurrencesOfString:@"APP_ID" withString:[NSString stringWithFormat:@"%d", appID]];
 			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:reviewURL]];
 			
 			[userDefaults setBool:YES forKey:kAppiraterRatedCurrentVersion];

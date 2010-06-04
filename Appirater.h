@@ -41,11 +41,7 @@ extern NSString *const kAppiraterLaunchCount;
 extern NSString *const kAppiraterCurrentVersion;
 extern NSString *const kAppiraterRatedCurrentVersion;
 extern NSString *const kAppiraterDeclinedToRate;
-
-/*
- Place your Apple generated software id here.
- */
-#define APPIRATER_APP_ID				330453999
+extern NSString *const kAppiraterAppID;
 
 /*
  Your app's name.
@@ -94,12 +90,13 @@ extern NSString *const kAppiraterDeclinedToRate;
  'YES' will show the Appirater alert everytime. Useful for testing how your message
  looks and making sure the link to your app's review page works.
  */
-#define APPIRATER_DEBUG				NO
+#define APPIRATER_DEBUG					NO
 
 @interface Appirater : NSObject <UIAlertViewDelegate> {
 
 }
 
-+ (void)appLaunched;
+//appID is Apple ID from iTunes Connect, eg: 330453998
++ (void)appLaunchedWithID:(NSInteger)appID;
 
 @end
