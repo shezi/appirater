@@ -90,7 +90,11 @@ extern NSString *const kAppiraterAppID;
  'YES' will show the Appirater alert everytime. Useful for testing how your message
  looks and making sure the link to your app's review page works.
  */
-#define APPIRATER_DEBUG					NO
+#ifdef DEBUG
+	#define APPIRATER_DEBUG				YES
+#else
+	#define APPIRATER_DEBUG				NO
+#endif
 
 @interface Appirater : NSObject <UIAlertViewDelegate> {
 
