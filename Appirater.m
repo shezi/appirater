@@ -203,7 +203,6 @@ static Appirater *sharedAppirater = nil;
 											  otherButtonTitles:APPIRATER_RATE_BUTTON, APPIRATER_RATE_LATER, nil];
 	[alertView autorelease];
 	[alertView show];
-    [alertView release];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

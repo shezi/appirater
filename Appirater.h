@@ -46,13 +46,13 @@ extern NSString *const kAppiraterAppID;
 /*
  Your app's name.
  */
-#define APPIRATER_APP_NAME				@"Upsies!"
+#define APPIRATER_APP_NAME				[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey]
 
 /*
  This is the message your users will see once they've passed the day+launches
  threshold.
  */
-#define APPIRATER_MESSAGE				[NSString stringWithFormat:@"If you enjoy playing %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!", APPIRATER_APP_NAME]
+#define APPIRATER_MESSAGE               [NSString stringWithFormat:@"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!", APPIRATER_APP_NAME]
 
 /*
  This is the title of the message alert that users will see.
@@ -91,7 +91,7 @@ extern NSString *const kAppiraterAppID;
  looks and making sure the link to your app's review page works.
  */
 #ifdef DEBUG
-	#define APPIRATER_DEBUG				YES
+	#define APPIRATER_DEBUG				NO
 #else
 	#define APPIRATER_DEBUG				NO
 #endif
