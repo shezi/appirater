@@ -46,7 +46,7 @@ NSString *const kAppiraterDeclinedToRate			= @"kAppiraterDeclinedToRate";
 NSString *const kAppiraterAppID						= @"kAppiraterAppID";
 
 
-NSString *templateReviewURL = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=APP_ID&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&type=Purple+Software";
+NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=APP_ID&onlyLatestVersion=true&pageNumber=0&sortOrdering=1";
 
 @interface Appirater (hidden)
 - (BOOL)connectedToNetwork;
@@ -54,7 +54,8 @@ NSString *templateReviewURL = @"itms-apps://itunes.apple.com/WebObjects/MZStore.
 
 @implementation Appirater (hidden)
 
-- (BOOL)connectedToNetwork {
+- (BOOL)connectedToNetwork 
+{
     // Create zero addy
     struct sockaddr_in zeroAddress;
     bzero(&zeroAddress, sizeof(zeroAddress));
@@ -82,7 +83,11 @@ NSString *templateReviewURL = @"itms-apps://itunes.apple.com/WebObjects/MZStore.
 	NSURLRequest *testRequest = [NSURLRequest requestWithURL:testURL  cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:20.0];
 	NSURLConnection *testConnection = [[NSURLConnection alloc] connectionWithRequest:testRequest delegate:self];
 	
-    return ((isReachable && !needsConnection) || nonWiFi) ? (testConnection ? YES : NO) : NO;
+    BOOL result = ((isReachable && !needsConnection) || nonWiFi) ? (testConnection ? YES : NO) : NO;
+    
+    [testConnection release];
+    
+    return result;
 }
 
 @end
@@ -90,21 +95,26 @@ NSString *templateReviewURL = @"itms-apps://itunes.apple.com/WebObjects/MZStore.
 
 @implementation Appirater
 
+static Appirater *sharedAppirater = nil;
+
 + (void)appLaunchedWithID:(NSInteger)appID {
 	
 	[[NSUserDefaults standardUserDefaults] setInteger:appID forKey:kAppiraterAppID];
 	
-	Appirater *appirater = [[Appirater alloc] init];
-	[NSThread detachNewThreadSelector:@selector(_appLaunched) toTarget:appirater withObject:nil];
+	sharedAppirater = [[Appirater alloc] init];
+	[NSThread detachNewThreadSelector:@selector(_appLaunched) toTarget:sharedAppirater withObject:nil];
 }
 
-- (void)_appLaunched {
+- (void)_appLaunched 
+{
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	if (APPIRATER_DEBUG)
 	{
 		[self performSelectorOnMainThread:@selector(showPrompt) withObject:nil waitUntilDone:NO];
 		
+        
+        [pool drain];
 		return;
 	}
 	
@@ -176,12 +186,16 @@ NSString *templateReviewURL = @"itms-apps://itunes.apple.com/WebObjects/MZStore.
 	
 	[userDefaults synchronize];
 	if (!willShowPrompt)
-		[self autorelease];
+    {
+		[sharedAppirater autorelease];
+        sharedAppirater = nil;
+    }
 	
-	[pool release];
+	[pool drain];
 }
 
-- (void)showPrompt {
+- (void)showPrompt 
+{
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:APPIRATER_MESSAGE_TITLE
 														message:APPIRATER_MESSAGE
 													   delegate:self
@@ -189,6 +203,7 @@ NSString *templateReviewURL = @"itms-apps://itunes.apple.com/WebObjects/MZStore.
 											  otherButtonTitles:APPIRATER_RATE_BUTTON, APPIRATER_RATE_LATER, nil];
 	[alertView autorelease];
 	[alertView show];
+    [alertView release];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -220,7 +235,8 @@ NSString *templateReviewURL = @"itms-apps://itunes.apple.com/WebObjects/MZStore.
 	
 	[userDefaults synchronize];
 	
-	[self release];
+	[sharedAppirater release];
+    sharedAppirater = nil;
 }
 
 @end

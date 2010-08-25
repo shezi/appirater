@@ -46,13 +46,13 @@ extern NSString *const kAppiraterAppID;
 /*
  Your app's name.
  */
-#define APPIRATER_APP_NAME				[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey]
+#define APPIRATER_APP_NAME				@"Upsies!"
 
 /*
  This is the message your users will see once they've passed the day+launches
  threshold.
  */
-#define APPIRATER_MESSAGE				[NSString stringWithFormat:@"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!", APPIRATER_APP_NAME]
+#define APPIRATER_MESSAGE				[NSString stringWithFormat:@"If you enjoy playing %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!", APPIRATER_APP_NAME]
 
 /*
  This is the title of the message alert that users will see.
@@ -84,14 +84,14 @@ extern NSString *const kAppiraterAppID;
  Users will need to launch the same version of the app this many times before
  they will be prompted to rate it.
  */
-#define LAUNCHES_UNTIL_PROMPT			15		// integer
+#define LAUNCHES_UNTIL_PROMPT			10		// integer
 
 /*
  'YES' will show the Appirater alert everytime. Useful for testing how your message
  looks and making sure the link to your app's review page works.
  */
 #ifdef DEBUG
-	#define APPIRATER_DEBUG				NO
+	#define APPIRATER_DEBUG				YES
 #else
 	#define APPIRATER_DEBUG				NO
 #endif
