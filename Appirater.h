@@ -91,7 +91,7 @@ extern NSString *const kAppiraterAppID;
  looks and making sure the link to your app's review page works.
  */
 #ifdef DEBUG
-	#define APPIRATER_DEBUG				YES
+	#define APPIRATER_DEBUG				NO
 #else
 	#define APPIRATER_DEBUG				NO
 #endif
