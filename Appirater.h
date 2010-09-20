@@ -46,7 +46,7 @@ extern NSString *const kAppiraterAppID;
 /*
  Your app's name.
  */
-#define APPIRATER_APP_NAME				[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey]
+#define APPIRATER_APP_NAME				self.appName
 
 /*
  This is the message your users will see once they've passed the day+launches
@@ -91,7 +91,7 @@ extern NSString *const kAppiraterAppID;
  looks and making sure the link to your app's review page works.
  */
 #ifdef DEBUG
-	#define APPIRATER_DEBUG				NO
+	#define APPIRATER_DEBUG				YES
 #else
 	#define APPIRATER_DEBUG				NO
 #endif

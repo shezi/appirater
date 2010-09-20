@@ -50,6 +50,7 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 
 @interface Appirater (hidden)
 - (BOOL)connectedToNetwork;
+- (NSString *)appName;
 @end
 
 @implementation Appirater (hidden)
@@ -84,6 +85,13 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 	NSURLConnection *testConnection = [NSURLConnection connectionWithRequest:testRequest delegate:self];
 	
     return ((isReachable && !needsConnection) || nonWiFi) ? (testConnection ? YES : NO) : NO;
+}
+
+- (NSString *)appName
+{
+	NSString *candidate = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+	
+	return candidate ? candidate : [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleNameKey];
 }
 
 @end
