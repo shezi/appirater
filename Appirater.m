@@ -120,7 +120,6 @@ static Appirater *sharedAppirater = nil;
 }
 
 + (void)appLaunchedWithID:(NSInteger)appID {
-	
 	[[NSUserDefaults standardUserDefaults] setInteger:appID forKey:kAppiraterAppID];
 	
 	sharedAppirater = [[Appirater alloc] init];
@@ -135,7 +134,6 @@ static Appirater *sharedAppirater = nil;
 	{
 		[self performSelectorOnMainThread:@selector(showPrompt) withObject:nil waitUntilDone:NO];
 		
-        
         [pool drain];
 		return;
 	}
@@ -183,10 +181,7 @@ static Appirater *sharedAppirater = nil;
 		// have they already rated the app?
 		BOOL ratedApp = [userDefaults boolForKey:kAppiraterRatedCurrentVersion];
 		
-		if (secondsSinceLaunch > secondsUntilPrompt &&
-			launchCount > LAUNCHES_UNTIL_PROMPT &&
-			!declinedToRate &&
-			!ratedApp)
+		if (secondsSinceLaunch > secondsUntilPrompt && launchCount > LAUNCHES_UNTIL_PROMPT && !declinedToRate && !ratedApp)
 		{
 			if ([self connectedToNetwork])	// check if they can reach the app store
 			{

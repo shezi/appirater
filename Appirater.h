@@ -78,7 +78,7 @@ extern NSString *const kAppiraterAppID;
  Users will need to have the same version of your app installed for this many
  days before they will be prompted to rate it.
  */
-#define DAYS_UNTIL_PROMPT				90		// double
+#define DAYS_UNTIL_PROMPT				10		// double
 
 /*
  Users will need to launch the same version of the app this many times before
@@ -91,7 +91,7 @@ extern NSString *const kAppiraterAppID;
  looks and making sure the link to your app's review page works.
  */
 #ifdef DEBUG
-	#define APPIRATER_DEBUG				YES
+	#define APPIRATER_DEBUG				NO
 #else
 	#define APPIRATER_DEBUG				NO
 #endif
