@@ -78,13 +78,13 @@ extern NSString *const kAppiraterAppID;
  Users will need to have the same version of your app installed for this many
  days before they will be prompted to rate it.
  */
-#define DAYS_UNTIL_PROMPT				30		// double
+#define DAYS_UNTIL_PROMPT				90		// double
 
 /*
  Users will need to launch the same version of the app this many times before
  they will be prompted to rate it.
  */
-#define LAUNCHES_UNTIL_PROMPT			10		// integer
+#define LAUNCHES_UNTIL_PROMPT			15		// integer
 
 /*
  'YES' will show the Appirater alert everytime. Useful for testing how your message
@@ -102,5 +102,6 @@ extern NSString *const kAppiraterAppID;
 
 //appID is Apple ID from iTunes Connect, eg: 330453998
 + (void)appLaunchedWithID:(NSInteger)appID;
++ (void)openAppStoreReviewPage;
 
 @end

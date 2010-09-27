@@ -51,6 +51,7 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 @interface Appirater (hidden)
 - (BOOL)connectedToNetwork;
 - (NSString *)appName;
+- (void)openAppStoreReviewPage;
 @end
 
 @implementation Appirater (hidden)
@@ -94,12 +95,29 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 	return candidate ? candidate : [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleNameKey];
 }
 
+- (void)openAppStoreReviewPage
+{
+	NSInteger appID = [[NSUserDefaults standardUserDefaults] integerForKey:kAppiraterAppID];
+	NSString *reviewURL = [templateReviewURL stringByReplacingOccurrencesOfString:@"APP_ID" withString:[NSString stringWithFormat:@"%d", appID]];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:reviewURL]];
+	
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kAppiraterRatedCurrentVersion];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 @end
 
 
 @implementation Appirater
 
 static Appirater *sharedAppirater = nil;
+
++ (void)openAppStoreReviewPage
+{
+	sharedAppirater = [[Appirater alloc] init];
+	[sharedAppirater openAppStoreReviewPage];
+	[sharedAppirater release], sharedAppirater = nil;
+}
 
 + (void)appLaunchedWithID:(NSInteger)appID {
 	
@@ -222,11 +240,7 @@ static Appirater *sharedAppirater = nil;
 		case 1:
 		{
 			// they want to rate it
-			NSInteger appID = [userDefaults integerForKey:kAppiraterAppID];
-			NSString *reviewURL = [templateReviewURL stringByReplacingOccurrencesOfString:@"APP_ID" withString:[NSString stringWithFormat:@"%d", appID]];
-			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:reviewURL]];
-			
-			[userDefaults setBool:YES forKey:kAppiraterRatedCurrentVersion];
+			[self openAppStoreReviewPage];
 			break;
 		}
 		case 2:
