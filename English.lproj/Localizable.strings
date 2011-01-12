@@ -1,0 +1,5 @@
+/* Appirater English
+
+   No need to localize english since it will be the default language.
+   Because of how xcode works, we can't delete this file, however.
+ */
