@@ -52,7 +52,7 @@ extern NSString *const kAppiraterAppID;
  This is the message your users will see once they've passed the day+launches
  threshold.
  */
-#define APPIRATER_MESSAGE               [NSString stringWithFormat:@"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!", APPIRATER_APP_NAME]
+#define APPIRATER_MESSAGE               [NSString stringWithFormat:@"If you enjoy using %@, would you mind taking a moment to rate it? Thanks for your support!", APPIRATER_APP_NAME]
 
 /*
  This is the title of the message alert that users will see.
@@ -67,7 +67,7 @@ extern NSString *const kAppiraterAppID;
 /*
  Text of button that will send user to app review page.
  */
-#define APPIRATER_RATE_BUTTON			[NSString stringWithFormat:@"Rate %@", APPIRATER_APP_NAME]
+#define APPIRATER_RATE_BUTTON			[NSString stringWithFormat:@"Yes, Rate %@", APPIRATER_APP_NAME]
 
 /*
  Text for button to remind the user to review later.
