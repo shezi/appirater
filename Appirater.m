@@ -110,23 +110,34 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 
 @implementation Appirater
 
-static Appirater *sharedAppirater = nil;
+
++ (Appirater *) shared {
+	static Appirater *sSingleton;
+	
+	if (!sSingleton)
+		sSingleton = [Appirater new];
+	
+	return sSingleton;
+}
 
 + (void)openAppStoreReviewPage
 {
-	sharedAppirater = [[Appirater alloc] init];
-	[sharedAppirater openAppStoreReviewPage];
-	[sharedAppirater release], sharedAppirater = nil;
+	[[Appirater shared] openAppStoreReviewPage];
 }
 
 + (void)appLaunchedWithID:(NSInteger)appID {
 	[[NSUserDefaults standardUserDefaults] setInteger:appID forKey:kAppiraterAppID];
 	
-	sharedAppirater = [[Appirater alloc] init];
-	[NSThread detachNewThreadSelector:@selector(_appLaunched) toTarget:sharedAppirater withObject:nil];
+	[NSThread detachNewThreadSelector:@selector(_appLaunchedOrEnteredForeground) toTarget:[Appirater shared] withObject:nil];
 }
 
-- (void)_appLaunched 
+
++ (void)appEnteredForeground {
+	[NSThread detachNewThreadSelector:@selector(_appLaunchedOrEnteredForeground) toTarget:[Appirater shared] withObject:nil];
+}
+
+
+- (void)_appLaunchedOrEnteredForeground 
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
@@ -185,7 +196,6 @@ static Appirater *sharedAppirater = nil;
 		{
 			if ([self connectedToNetwork])	// check if they can reach the app store
 			{
-				willShowPrompt = YES;
 				[self performSelectorOnMainThread:@selector(showPrompt) withObject:nil waitUntilDone:NO];
 			}
 		}
@@ -202,11 +212,6 @@ static Appirater *sharedAppirater = nil;
 
 	
 	[userDefaults synchronize];
-	if (!willShowPrompt)
-    {
-		[sharedAppirater autorelease];
-        sharedAppirater = nil;
-    }
 	
 	[pool drain];
 }
@@ -246,9 +251,6 @@ static Appirater *sharedAppirater = nil;
 	}
 	
 	[userDefaults synchronize];
-	
-	[sharedAppirater release];
-    sharedAppirater = nil;
 }
 
 @end
