@@ -10,7 +10,7 @@ Getting Started
 1. Add the Appirater code into your project
 2. Add the `CFNetwork` and `SystemConfiguration` frameworks to your project
 3. Call `[Appirater appLaunchedWithID:<Your apple provided software id>]` at the end of your app delegate's `application:didFinishLaunchingWithOptions:` method.
-4. Call `[Appirater applicationWillEnterForeground]` from the app delegate's `applicationWillEnterForegroun` method. 
+4. Call `[Appirater applicationWillEnterForeground]` from the app delegate's `applicationWillEnterForeground` method. 
 License
 -------
 Copyright 2008. [Arash Payan] [arash].
