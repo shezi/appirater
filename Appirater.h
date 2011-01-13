@@ -119,6 +119,8 @@ extern NSString *const kAppiraterAppID;
 
 //appID is Apple ID from iTunes Connect, eg: 330453998
 + (void)appLaunchedWithID:(NSInteger)appID;
++ (void)applicationWillEnterForeground;
+
 + (void)openAppStoreReviewPage;
 
 @end

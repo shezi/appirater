@@ -132,7 +132,7 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 }
 
 
-+ (void)appEnteredForeground {
++ (void)applicationWillEnterForeground {
 	[NSThread detachNewThreadSelector:@selector(_appLaunchedOrEnteredForeground) toTarget:[Appirater shared] withObject:nil];
 }
 
