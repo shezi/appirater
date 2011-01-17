@@ -38,10 +38,19 @@
 
 extern NSString *const kAppiraterLaunchDate;
 extern NSString *const kAppiraterLaunchCount;
+extern NSString *const kAppiraterLaunchReminderCount;
 extern NSString *const kAppiraterCurrentVersion;
 extern NSString *const kAppiraterRatedCurrentVersion;
 extern NSString *const kAppiraterDeclinedToRate;
+extern NSString *const kAppiraterReminderToRate;
 extern NSString *const kAppiraterAppID;
+
+enum {
+	kNoThanksButtonIndex = 0,
+    kYesButtonIndex = 1,
+    kReminderButtonIndex = 2,
+};
+
 
 /*
  Your app's name.
@@ -102,6 +111,14 @@ extern NSString *const kAppiraterAppID;
  they will be prompted to rate it.
  */
 #define LAUNCHES_UNTIL_PROMPT			7		// integer
+
+
+/*
+ Once a user selects "remind me later" how many
+ launches before they are reminded again
+*/
+#define LAUNCHES_UNTIL_REMINDER			3		// integer
+
 
 /*
  'YES' will show the Appirater alert everytime. Useful for testing how your message

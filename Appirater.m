@@ -40,9 +40,11 @@
 
 NSString *const kAppiraterLaunchDate				= @"kAppiraterLaunchDate";
 NSString *const kAppiraterLaunchCount				= @"kAppiraterLaunchCount";
+NSString *const kAppiraterLaunchReminderCount		= @"kAppiraterLaunchReminderCount";
 NSString *const kAppiraterCurrentVersion			= @"kAppiraterCurrentVersion";
 NSString *const kAppiraterRatedCurrentVersion		= @"kAppiraterRatedCurrentVersion";
 NSString *const kAppiraterDeclinedToRate			= @"kAppiraterDeclinedToRate";
+NSString *const kAppiraterReminderToRate			= @"kAppiraterReminderToRate";
 NSString *const kAppiraterAppID						= @"kAppiraterAppID";
 
 
@@ -187,14 +189,28 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 		// have they previously declined to rate this version of the app?
 		BOOL declinedToRate = [userDefaults boolForKey:kAppiraterDeclinedToRate];
 		
+		// have they previously asked to be reminded to rate?
+		BOOL reminderToRate = [userDefaults boolForKey:kAppiraterReminderToRate];
+		int launchReminderCount = 0;
+		if (reminderToRate) 
+		{
+			launchReminderCount = [userDefaults integerForKey:kAppiraterLaunchReminderCount];
+			launchReminderCount++;
+			[userDefaults setInteger:launchReminderCount forKey:kAppiraterLaunchReminderCount];
+		}
+			
+		
 		// have they already rated the app?
 		BOOL ratedApp = [userDefaults boolForKey:kAppiraterRatedCurrentVersion];
 		
 		if (secondsSinceLaunch > secondsUntilPrompt && launchCount > LAUNCHES_UNTIL_PROMPT && !declinedToRate && !ratedApp)
 		{
-			if ([self connectedToNetwork])	// check if they can reach the app store
+			if (!reminderToRate || launchReminderCount > LAUNCHES_UNTIL_REMINDER)
 			{
-				[self performSelectorOnMainThread:@selector(showPrompt) withObject:nil waitUntilDone:NO];
+				if ([self connectedToNetwork])	// check if they can reach the app store
+				{
+					[self performSelectorOnMainThread:@selector(showPrompt) withObject:nil waitUntilDone:NO];
+				}
 			}
 		}
 	}
@@ -204,8 +220,10 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 		[userDefaults setObject:version forKey:kAppiraterCurrentVersion];
 		[userDefaults setDouble:[[NSDate date] timeIntervalSince1970] forKey:kAppiraterLaunchDate];
 		[userDefaults setInteger:1 forKey:kAppiraterLaunchCount];
+		[userDefaults setInteger:0 forKey:kAppiraterLaunchReminderCount];
 		[userDefaults setBool:NO forKey:kAppiraterRatedCurrentVersion];
 		[userDefaults setBool:NO forKey:kAppiraterDeclinedToRate];
+		[userDefaults setBool:NO forKey:kAppiraterReminderToRate];
 	}
 
 	
@@ -229,20 +247,23 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	
 	switch (buttonIndex) {
-		case 0:
+		case kNoThanksButtonIndex :
 		{
 			// they don't want to rate it
 			[userDefaults setBool:YES forKey:kAppiraterDeclinedToRate];
+			[userDefaults setBool:NO forKey:kAppiraterReminderToRate];
 			break;
 		}
-		case 1:
+		case kYesButtonIndex :
 		{
 			// they want to rate it
 			[self openAppStoreReviewPage];
 			break;
 		}
-		case 2:
+		case kReminderButtonIndex :
 			// remind them later
+			[userDefaults setBool:YES forKey:kAppiraterReminderToRate];
+			[userDefaults setInteger:0 forKey:kAppiraterLaunchReminderCount];
 			break;
 		default:
 			break;
