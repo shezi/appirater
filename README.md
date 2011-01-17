@@ -5,11 +5,16 @@ to review your app on the App Store. The code is released under the MIT/X11, so 
 modify and share your changes with the world. To find out more, check out the [project
 homepage] [homepage].
 
+Note: This fork of the appirater code has been enhanced quite a bit with improved code and 
+new funcitonality such as memory usage improvements, localization in several languages,
+and additional options for when to display the rating request dialog.
+
 Getting Started
 ---------------
 1. Add the Appirater code into your project
 2. Add the `CFNetwork` and `SystemConfiguration` frameworks to your project
 3. Call `[Appirater appLaunchedWithID:<Your apple provided software id>]` at the end of your app delegate's `application:didFinishLaunchingWithOptions:` method.
+4. Call `[Appirater applicationWillEnterForeground]` from your app delegate's `applicationWillEnterForeground` method. 
 
 License
 -------
