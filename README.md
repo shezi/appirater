@@ -1,7 +1,8 @@
 Introduction
 ------------
-Appirater is a class that you can drop into any iPhone app that will help remind your users
-to review your app on the App Store. The code is released under the MIT/X11, so feel free to
+Appirater is a hightly configurable, localized framework that you can drop into any iOS app which will help remind your users to review your app on the App Store. The framework is currently localized in English, French and Japanese. 
+
+The code is released under the MIT/X11, so feel free to
 modify and share your changes with the world. To find out more, check out the [project
 homepage] [homepage].
 
