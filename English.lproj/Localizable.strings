@@ -1,5 +1,6 @@
-/* Appirater English
-
-   No need to localize english since it will be the default language.
-   Because of how xcode works, we can't delete this file, however.
- */
+/* Appirater English */
+kAppiraterMessageKey = "If you enjoy using %@, would you mind taking a moment to rate it? Thanks for your support! \n\n";
+kAppiraterTitleKey = "Rate %@";
+kAppiraterNoTextKey = "No, Thanks";
+kAppiraterYesTextKey = "Yes, Rate %@";
+kAppiraterReminderTextKey = "Remind me later";

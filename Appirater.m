@@ -46,6 +46,11 @@ NSString *const kAppiraterRatedCurrentVersion		= @"kAppiraterRatedCurrentVersion
 NSString *const kAppiraterDeclinedToRate			= @"kAppiraterDeclinedToRate";
 NSString *const kAppiraterReminderToRate			= @"kAppiraterReminderToRate";
 NSString *const kAppiraterAppID						= @"kAppiraterAppID";
+NSString *const kAppiraterTitleKey					= @"kAppiraterTitleKey";
+NSString *const kAppiraterMessageKey				= @"kAppiraterMessageKey";
+NSString *const kAppiraterYesTextKey				= @"kAppiraterYesTextKey";
+NSString *const kAppiraterNoTextKey					= @"kAppiraterNoTextKey";
+NSString *const kAppiraterReminderTextKey			= @"kAppiraterReminderTextKey";
 
 
 NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=APP_ID&onlyLatestVersion=true&pageNumber=0&sortOrdering=1";
@@ -54,6 +59,7 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 - (BOOL)connectedToNetwork;
 - (NSString *)appName;
 - (void)openAppStoreReviewPage;
+- (void)addImageToAlertView:(UIAlertView *)alertView;
 @end
 
 @implementation Appirater (hidden)
@@ -105,6 +111,35 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 	
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kAppiraterRatedCurrentVersion];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+
+- (void)addImageToAlertView:(UIAlertView *)alertView {
+	NSArray *subViews = [alertView subviews];
+	for (UIView *aView in subViews)
+	{
+		if ([aView isKindOfClass:[UILabel class]])
+		{
+			UILabel *aLabel = (UILabel *)aView;
+			if ([aLabel.text isEqualToString:APPIRATER_MESSAGE])
+			{
+				/* Place the image centered at the very bottom of the message label.
+				   This assumes that the message has at least 2 extra \n's at
+				   the end of it to provide room for the image, otherwise the image
+				   will obscure the text.
+				*/
+				UIImage *alertImage = [UIImage imageNamed:APPIRATER_IMAGE];
+				UIImageView *alertImageView = [[UIImageView alloc] initWithImage:alertImage];
+				CGRect imageFrame = alertImageView.frame;
+				imageFrame.origin.y = aLabel.frame.origin.y + aLabel.frame.size.height - (imageFrame.size.height / 2);
+				imageFrame.origin.x = aLabel.center.x - (imageFrame.size.width / 2);
+				alertImageView.frame = imageFrame;
+				[alertView addSubview:alertImageView];
+				[alertImageView release];
+			}
+		}
+	}
+	
 }
 
 @end
@@ -239,8 +274,14 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 													   delegate:self
 											  cancelButtonTitle:APPIRATER_CANCEL_BUTTON
 											  otherButtonTitles:APPIRATER_RATE_BUTTON, APPIRATER_RATE_LATER, nil];
-	[alertView autorelease];
+	
+	
 	[alertView show];
+	if (APPIRATER_USE_IMAGE)
+	{
+		[self addImageToAlertView:alertView];
+	}
+	[alertView autorelease];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

@@ -44,6 +44,11 @@ extern NSString *const kAppiraterRatedCurrentVersion;
 extern NSString *const kAppiraterDeclinedToRate;
 extern NSString *const kAppiraterReminderToRate;
 extern NSString *const kAppiraterAppID;
+extern NSString *const kAppiraterTitleKey;
+extern NSString *const kAppiraterMessageKey;
+extern NSString *const kAppiraterYesTextKey;
+extern NSString *const kAppiraterNoTextKey;
+extern NSString *const kAppiraterReminderTextKey;
 
 enum {
 	kNoThanksButtonIndex = 0,
@@ -60,7 +65,7 @@ enum {
 /*
  The localized template message for displaying the rating request
  */
-#define APPIRATER_LOCALIZED_MESSAGE		NSLocalizedString(@"If you enjoy using %@, would you mind taking a moment to rate it? Thanks for your support!", @"rating message")
+#define APPIRATER_LOCALIZED_MESSAGE		NSLocalizedString(kAppiraterMessageKey, @"rating message")
 
 /*
  This is the message your users will see once they've passed the day+launches
@@ -72,7 +77,7 @@ enum {
  The localized template title of the message alert
  */
 
-#define APPIRATER_LOCALIZED_TITLE		NSLocalizedString(@"Rate %@", @"rating title for dialog")
+#define APPIRATER_LOCALIZED_TITLE		NSLocalizedString(kAppiraterTitleKey, @"rating title for dialog")
 
 /*
  This is the title of the message alert that users will see.
@@ -82,13 +87,13 @@ enum {
 /*
  The text of the button that rejects reviewing the app.
  */
-#define APPIRATER_CANCEL_BUTTON			NSLocalizedString(@"No, Thanks", @"rating no button text")
+#define APPIRATER_CANCEL_BUTTON			NSLocalizedString(kAppiraterNoTextKey, @"rating no button text")
 
 /*
  The localized confirm button text
  */
 
-#define APPIRATER_LOCALIZED_RATE_BUTTON NSLocalizedString(@"Yes, Rate %@", @"rating yes button text")
+#define APPIRATER_LOCALIZED_RATE_BUTTON NSLocalizedString(kAppiraterYesTextKey, @"rating yes button text")
 
 /*
  Text of button that will send user to app review page.
@@ -98,7 +103,7 @@ enum {
 /*
  Text for button to remind the user to review later.
  */
-#define APPIRATER_RATE_LATER			NSLocalizedString(@"Remind me later", @"rating reminder button text")
+#define APPIRATER_RATE_LATER			NSLocalizedString(kAppiraterReminderTextKey, @"rating reminder button text")
 
 /*
  Users will need to have the same version of your app installed for this many
@@ -121,11 +126,32 @@ enum {
 
 
 /*
- 'YES' will show the Appirater alert everytime. Useful for testing how your message
- looks and making sure the link to your app's review page works.
+ If set to yes, an image will be inserted into the alert,
+ centered at the bottom of the message. This is useful 
+ if you want to add a 5-star icon or app icon to spice
+ up the alert a bit. Note: for this to work, you must
+ save extra space at the bottom of your message by
+ adding extra line breaks to the end of APPIRATER_LOCALIZED_MESSAGE.
+*/
+#define APPIRATER_USE_IMAGE				YES
+
+/*
+ The image to use when APPIRATER_USE_IMAGE is set to YES.
+ *** NOTE: YOU MUST SUPPLY THE IMAGE TO USE IN YOUR PROJECT. ***
  */
+#define APPIRATER_IMAGE					@"stars.png"
+
+/*
+ 'YES' will show the Appirater alert every time the app is
+ launched or enters the foreground. Useful for testing how your 
+ message looks and making sure the link to your app's review 
+ page works. Note that having DEBUG defined in your debug
+ build is particularly useful as you can ensure that you
+ don't accidently leave APPIRATER_DEBUG set to YES when
+ submitting a release build to the app store.
+*/
 #ifdef DEBUG
-	#define APPIRATER_DEBUG				NO
+	#define APPIRATER_DEBUG				YES
 #else
 	#define APPIRATER_DEBUG				NO
 #endif
