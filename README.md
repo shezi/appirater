@@ -30,4 +30,4 @@ to this library be contributed back for the benefit of all who use Appirater.
 
 [homepage]: http://arashpayan.com/blog/index.php/2009/09/07/presenting-appirater/
 [arash]: http://arashpayan.com
-[screenshot] http://app-apps.com/images/appirater_screenshot.png 
+[screenshot]: http://app-apps.com/images/appirater_screenshot.png 
