@@ -129,6 +129,8 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 				   will obscure the text.
 				*/
 				UIImage *alertImage = [UIImage imageNamed:APPIRATER_IMAGE];
+				NSAssert(alertImage, @"Unable to find APPIRATER_IMAGE to use in alertview. Did you set APPIRATER_IMAGE correctly?");
+
 				UIImageView *alertImageView = [[UIImageView alloc] initWithImage:alertImage];
 				CGRect imageFrame = alertImageView.frame;
 				imageFrame.origin.y = aLabel.frame.origin.y + aLabel.frame.size.height - (imageFrame.size.height / 2);
