@@ -65,7 +65,7 @@ enum {
 /*
  The localized template message for displaying the rating request
  */
-#define APPIRATER_LOCALIZED_MESSAGE		NSLocalizedString(kAppiraterMessageKey, @"rating message")
+#define APPIRATER_LOCALIZED_MESSAGE		NSLocalizedStringFromTable(kAppiraterMessageKey, @"Appirater", @"rating message")
 
 /*
  This is the message your users will see once they've passed the day+launches
@@ -77,7 +77,7 @@ enum {
  The localized template title of the message alert
  */
 
-#define APPIRATER_LOCALIZED_TITLE		NSLocalizedString(kAppiraterTitleKey, @"rating title for dialog")
+#define APPIRATER_LOCALIZED_TITLE		NSLocalizedStringFromTable(kAppiraterTitleKey, @"Appirater", @"rating title for dialog")
 
 /*
  This is the title of the message alert that users will see.
@@ -87,13 +87,13 @@ enum {
 /*
  The text of the button that rejects reviewing the app.
  */
-#define APPIRATER_CANCEL_BUTTON			NSLocalizedString(kAppiraterNoTextKey, @"rating no button text")
+#define APPIRATER_CANCEL_BUTTON			NSLocalizedStringFromTable(kAppiraterNoTextKey, @"Appirater", @"rating no button text")
 
 /*
  The localized confirm button text
  */
 
-#define APPIRATER_LOCALIZED_RATE_BUTTON NSLocalizedString(kAppiraterYesTextKey, @"rating yes button text")
+#define APPIRATER_LOCALIZED_RATE_BUTTON NSLocalizedStringFromTable(kAppiraterYesTextKey, @"Appirater", @"rating yes button text")
 
 /*
  Text of button that will send user to app review page.
@@ -103,7 +103,7 @@ enum {
 /*
  Text for button to remind the user to review later.
  */
-#define APPIRATER_RATE_LATER			NSLocalizedString(kAppiraterReminderTextKey, @"rating reminder button text")
+#define APPIRATER_RATE_LATER			NSLocalizedStringFromTable(kAppiraterReminderTextKey, @"Appirater", @"rating reminder button text")
 
 /*
  Users will need to have the same version of your app installed for this many
