@@ -1,4 +1,4 @@
-/* Appirater English */
+/* Appirater Danish */
 kAppiraterMessageKey = "Syntes du godt om %@ så ville vi blive glade hvis du ville rate det. Tak for din støtte! \n\n";
 kAppiraterTitleKey = "Rate %@";
 kAppiraterNoTextKey = "Nej Tak";
