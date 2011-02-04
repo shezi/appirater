@@ -51,6 +51,8 @@ NSString *const kAppiraterMessageKey				= @"kAppiraterMessageKey";
 NSString *const kAppiraterYesTextKey				= @"kAppiraterYesTextKey";
 NSString *const kAppiraterNoTextKey					= @"kAppiraterNoTextKey";
 NSString *const kAppiraterReminderTextKey			= @"kAppiraterReminderTextKey";
+NSString *const kCFBundleDisplayNameKey				= @"CFBundleDisplayName";
+NSString *const kCFAppStoreDisplayNameKey			= @"CFAppStoreDisplayName";
 
 
 NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=APP_ID&onlyLatestVersion=true&pageNumber=0&sortOrdering=1";
@@ -98,8 +100,12 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 
 - (NSString *)appName
 {
-	NSString *candidate = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+	NSString *candidate = nil;
 	
+//	candidate = [[[NSBundle mainBundle] infoDictionary] objectForKey:kCFAppStoreDisplayNameKey];
+//	if (!candidate)
+		candidate = [[[NSBundle mainBundle] infoDictionary] objectForKey:kCFBundleDisplayNameKey];
+
 	return candidate ? candidate : [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleNameKey];
 }
 

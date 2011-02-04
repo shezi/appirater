@@ -50,6 +50,9 @@ extern NSString *const kAppiraterYesTextKey;
 extern NSString *const kAppiraterNoTextKey;
 extern NSString *const kAppiraterReminderTextKey;
 
+extern NSString *const kCFBundleDisplayNameKey;
+extern NSString *const kCFAppStoreDisplayNameKey;
+
 enum {
 	kNoThanksButtonIndex = 0,
     kYesButtonIndex = 1,
