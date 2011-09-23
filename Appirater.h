@@ -167,5 +167,6 @@ enum {
 + (void)appLaunchedWithID:(NSInteger)appID;
 + (void)applicationWillEnterForeground;
 + (void)openAppStoreReviewPage;
-
++ (Appirater *) shared;
+- (void) showPromptIfNeeded;
 @end

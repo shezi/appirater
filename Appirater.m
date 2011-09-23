@@ -187,14 +187,6 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	if (APPIRATER_DEBUG)
-	{
-		[self performSelectorOnMainThread:@selector(showPrompt) withObject:nil waitUntilDone:NO];
-		
-        [pool drain];
-		return;
-	}
-	
 	// get the app's version
 	NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleShortVersionStringKey];
 	
@@ -220,18 +212,12 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 			[userDefaults setDouble:timeInterval forKey:kAppiraterLaunchDate];
 		}
 		
-		NSTimeInterval secondsSinceLaunch = [[NSDate date] timeIntervalSinceDate:[NSDate dateWithTimeIntervalSince1970:timeInterval]];
-		double secondsUntilPrompt = 60 * 60 * 24 * DAYS_UNTIL_PROMPT;
-		
 		// get the launch count
 		int launchCount = [userDefaults integerForKey:kAppiraterLaunchCount];
 		launchCount++;
 		[userDefaults setInteger:launchCount forKey:kAppiraterLaunchCount];
 		if (APPIRATER_DEBUG)
 			NSLog(@"APPIRATER Launch count: %d", launchCount);
-		
-		// have they previously declined to rate this version of the app?
-		BOOL declinedToRate = [userDefaults boolForKey:kAppiraterDeclinedToRate];
 		
 		// have they previously asked to be reminded to rate?
 		BOOL reminderToRate = [userDefaults boolForKey:kAppiraterReminderToRate];
@@ -241,21 +227,6 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 			launchReminderCount = [userDefaults integerForKey:kAppiraterLaunchReminderCount];
 			launchReminderCount++;
 			[userDefaults setInteger:launchReminderCount forKey:kAppiraterLaunchReminderCount];
-		}
-			
-		
-		// have they already rated the app?
-		BOOL ratedApp = [userDefaults boolForKey:kAppiraterRatedCurrentVersion];
-		
-		if (secondsSinceLaunch > secondsUntilPrompt && launchCount > LAUNCHES_UNTIL_PROMPT && !declinedToRate && !ratedApp)
-		{
-			if (!reminderToRate || launchReminderCount > LAUNCHES_UNTIL_REMINDER)
-			{
-				if ([self connectedToNetwork])	// check if they can reach the app store
-				{
-					[self performSelectorOnMainThread:@selector(showPrompt) withObject:nil waitUntilDone:NO];
-				}
-			}
 		}
 	}
 	else
@@ -274,6 +245,39 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 	[userDefaults synchronize];
 	
 	[pool drain];
+}
+
+- (void)showPromptIfNeeded {
+#ifdef APPIRATER_DEBUG	
+    [self performSelectorOnMainThread:@selector(showPrompt) withObject:nil waitUntilDone:NO];
+#else
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL ratedApp = [userDefaults boolForKey:kAppiraterRatedCurrentVersion];
+    BOOL declinedToRate = [userDefaults boolForKey:kAppiraterDeclinedToRate];
+
+    if (!declinedToRate && !ratedApp) { 
+        NSTimeInterval timeInterval = [userDefaults doubleForKey:kAppiraterLaunchDate];
+        NSTimeInterval secondsSinceLaunch = [[NSDate date] timeIntervalSinceDate:[NSDate dateWithTimeIntervalSince1970:timeInterval]];
+        CGFloat secondsUntilPrompt = 60 * 60 * 24 * DAYS_UNTIL_PROMPT;
+        NSInteger launchCount = [userDefaults integerForKey:kAppiraterLaunchCount];
+
+        if (secondsSinceLaunch > secondsUntilPrompt && launchCount > LAUNCHES_UNTIL_PROMPT) {
+            BOOL reminderToRate = [userDefaults boolForKey:kAppiraterReminderToRate];
+            NSInteger launchReminderCount = 0;
+            if (reminderToRate) 
+            {
+                launchReminderCount = [userDefaults integerForKey:kAppiraterLaunchReminderCount];
+            }
+
+            if (!reminderToRate || launchReminderCount > LAUNCHES_UNTIL_REMINDER) {
+                if ([self connectedToNetwork])	{
+                    [self performSelectorOnMainThread:@selector(showPrompt) withObject:nil waitUntilDone:NO];
+                }
+            }
+        }
+    }
+    [userDefaults release];
+#endif
 }
 
 - (void)showPrompt 
