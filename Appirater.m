@@ -53,7 +53,7 @@ NSString *const kAppiraterNoTextKey					= @"kAppiraterNoTextKey";
 NSString *const kAppiraterReminderTextKey			= @"kAppiraterReminderTextKey";
 NSString *const kCFBundleDisplayNameKey				= @"CFBundleDisplayName";
 NSString *const kCFAppStoreDisplayNameKey			= @"CFAppStoreDisplayName";
-
+NSString *const kCFBundleShortVersionStringKey      = @"CFBundleShortVersionString";
 
 NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=APP_ID&onlyLatestVersion=true&pageNumber=0&sortOrdering=1";
 
@@ -196,7 +196,7 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 	}
 	
 	// get the app's version
-	NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
+	NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleShortVersionStringKey];
 	
 	// get the version number that we've been tracking
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
