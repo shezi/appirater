@@ -248,36 +248,37 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 }
 
 - (void)showPromptIfNeeded {
-#ifdef APPIRATER_DEBUG	
-    [self performSelectorOnMainThread:@selector(showPrompt) withObject:nil waitUntilDone:NO];
-#else
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL ratedApp = [userDefaults boolForKey:kAppiraterRatedCurrentVersion];
-    BOOL declinedToRate = [userDefaults boolForKey:kAppiraterDeclinedToRate];
+    if (APPIRATER_DEBUG)
+        [self performSelectorOnMainThread:@selector(showPrompt) withObject:nil waitUntilDone:NO];
+    else 
+    {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        BOOL ratedApp = [userDefaults boolForKey:kAppiraterRatedCurrentVersion];
+        BOOL declinedToRate = [userDefaults boolForKey:kAppiraterDeclinedToRate];
 
-    if (!declinedToRate && !ratedApp) { 
-        NSTimeInterval timeInterval = [userDefaults doubleForKey:kAppiraterLaunchDate];
-        NSTimeInterval secondsSinceLaunch = [[NSDate date] timeIntervalSinceDate:[NSDate dateWithTimeIntervalSince1970:timeInterval]];
-        CGFloat secondsUntilPrompt = 60 * 60 * 24 * DAYS_UNTIL_PROMPT;
-        NSInteger launchCount = [userDefaults integerForKey:kAppiraterLaunchCount];
+        if (!declinedToRate && !ratedApp) { 
+            NSTimeInterval timeInterval = [userDefaults doubleForKey:kAppiraterLaunchDate];
+            NSTimeInterval secondsSinceLaunch = [[NSDate date] timeIntervalSinceDate:[NSDate dateWithTimeIntervalSince1970:timeInterval]];
+            CGFloat secondsUntilPrompt = 60 * 60 * 24 * DAYS_UNTIL_PROMPT;
+            NSInteger launchCount = [userDefaults integerForKey:kAppiraterLaunchCount];
 
-        if (secondsSinceLaunch > secondsUntilPrompt && launchCount > LAUNCHES_UNTIL_PROMPT) {
-            BOOL reminderToRate = [userDefaults boolForKey:kAppiraterReminderToRate];
-            NSInteger launchReminderCount = 0;
-            if (reminderToRate) 
-            {
-                launchReminderCount = [userDefaults integerForKey:kAppiraterLaunchReminderCount];
-            }
+            if (secondsSinceLaunch > secondsUntilPrompt && launchCount > LAUNCHES_UNTIL_PROMPT) {
+                BOOL reminderToRate = [userDefaults boolForKey:kAppiraterReminderToRate];
+                NSInteger launchReminderCount = 0;
+                if (reminderToRate) 
+                {
+                    launchReminderCount = [userDefaults integerForKey:kAppiraterLaunchReminderCount];
+                }
 
-            if (!reminderToRate || launchReminderCount > LAUNCHES_UNTIL_REMINDER) {
-                if ([self connectedToNetwork])	{
-                    [self performSelectorOnMainThread:@selector(showPrompt) withObject:nil waitUntilDone:NO];
+                if (!reminderToRate || launchReminderCount > LAUNCHES_UNTIL_REMINDER) {
+                    if ([self connectedToNetwork])	{
+                        [self performSelectorOnMainThread:@selector(showPrompt) withObject:nil waitUntilDone:NO];
+                    }
                 }
             }
         }
+        [userDefaults release];
     }
-    [userDefaults release];
-#endif
 }
 
 - (void)showPrompt 

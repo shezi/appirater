@@ -154,7 +154,7 @@ enum {
  submitting a release build to the app store.
 */
 #ifdef DEBUG
-	#define APPIRATER_DEBUG				YES
+	#define APPIRATER_DEBUG				NO
 #else
 	#define APPIRATER_DEBUG				NO
 #endif
