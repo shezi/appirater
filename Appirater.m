@@ -277,7 +277,6 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
                 }
             }
         }
-        [userDefaults release];
     }
 }
 
