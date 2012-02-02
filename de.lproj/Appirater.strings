@@ -1,0 +1,6 @@
+/* Appirater German */
+kAppiraterMessageKey = "Wenn Ihnen %@ gefällt, würden Sie sich einen Moment Zeit nehmen, die Anwendung im iTunes AppStore zu bewerten? Vielen Dank für Ihre Unterstützung! \n\n";
+kAppiraterTitleKey = "%@ bewerten";
+kAppiraterNoTextKey = "Nein danke!";
+kAppiraterYesTextKey = "Ja, jetzt %@ bewerten";
+kAppiraterReminderTextKey = "Später noch einmal erinnern";
