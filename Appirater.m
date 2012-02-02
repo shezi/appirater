@@ -144,7 +144,6 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 				imageFrame.origin.x = aLabel.center.x - (imageFrame.size.width / 2);
 				alertImageView.frame = imageFrame;
 				[alertView addSubview:alertImageView];
-				[alertImageView release];
 			}
 		}
 	}
@@ -185,8 +184,6 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 
 - (void)_appLaunchedOrEnteredForeground 
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
 	// get the app's version
 	NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleShortVersionStringKey];
 	
@@ -294,7 +291,6 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 	{
 		[self addImageToAlertView:alertView];
 	}
-	[alertView autorelease];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
