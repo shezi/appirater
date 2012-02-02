@@ -18,7 +18,9 @@ Getting Started
 1. Add the Appirater code into your project
 2. Add the `CFNetwork` and `SystemConfiguration` frameworks to your project
 3. Call `[Appirater appLaunchedWithID:<Your apple provided software id>]` at the end of your app delegate's `application:didFinishLaunchingWithOptions:` method.
-4. Call `[Appirater applicationWillEnterForeground]` from your app delegate's `applicationWillEnterForeground` method. 
+4. Call `[Appirater applicationWillEnterForeground]` from your app delegate's `applicationWillEnterForeground` method.
+5. Call `[[Appirater shared] showPromptIfNeeded]` in places where you want your dialog to appear. You can put the call directly after the two class method calls above, if you want.
+
 
 License
 -------
